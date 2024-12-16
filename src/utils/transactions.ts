@@ -13,7 +13,7 @@ export async function getSavings() {
     }
 }
 
-export async function addSavings(object) {
+export async function addSavings(object: any) {
     const { data, error } = await supabase
         .from('savings')
         .insert([

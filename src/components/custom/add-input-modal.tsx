@@ -1,23 +1,16 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { useState } from 'react'
-import { DialogHeader, DialogFooter, DialogContent, DialogDescription, DialogTitle } from "../ui/dialog";
+import { DialogHeader, DialogContent, DialogDescription, DialogTitle } from "../ui/dialog";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 import { Button } from '../ui/button';
 import { z } from "zod"
-import { format } from "date-fns"
 
-import { addSavings, addTransaction } from '@/utils/transactions'
+import { addTransaction } from '@/utils/transactions'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '../ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { METHOD_OF_PAYMENT, TRANSACTION_TYPES } from '@/utils/consts';
 import { Textarea } from '../ui/textarea';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import { Calendar } from '../ui/calendar';
-import { CalendarIcon } from '@radix-ui/react-icons';
-import { cn } from '@/lib/utils';
 
 
 
@@ -42,14 +35,14 @@ const FormSchema = z.object({
 
 })
 
-export default function AddInputModal({ transactionType, closeModal }) {
+export default function AddInputModal({ transactionType, closeModal }: any) {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             transactionType,
         }
     })
-    function save(data) {
+    function save(data: any) {
         // let object = {
         //     type: '34ß',
 

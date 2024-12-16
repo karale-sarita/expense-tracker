@@ -12,7 +12,6 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as LandingImport } from './routes/landing'
-import { Route as HomeImport } from './routes/home'
 import { Route as ExpenseImport } from './routes/expense'
 import { Route as AuthImport } from './routes/auth'
 import { Route as IndexImport } from './routes/index'
@@ -27,11 +26,6 @@ import { Route as AuthCallbackIndexImport } from './routes/auth/callback/index'
 
 const LandingRoute = LandingImport.update({
   path: '/landing',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const HomeRoute = HomeImport.update({
-  path: '/home',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -51,8 +45,8 @@ const IndexRoute = IndexImport.update({
 } as any)
 
 const HomeDashboardRoute = HomeDashboardImport.update({
-  path: '/dashboard',
-  getParentRoute: () => HomeRoute,
+  path: '/home/dashboard',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const ExpenseOutputRoute = ExpenseOutputImport.update({
@@ -105,13 +99,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExpenseImport
       parentRoute: typeof rootRoute
     }
-    '/home': {
-      id: '/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof HomeImport
-      parentRoute: typeof rootRoute
-    }
     '/landing': {
       id: '/landing'
       path: '/landing'
@@ -135,10 +122,10 @@ declare module '@tanstack/react-router' {
     }
     '/home/dashboard': {
       id: '/home/dashboard'
-      path: '/dashboard'
+      path: '/home/dashboard'
       fullPath: '/home/dashboard'
       preLoaderRoute: typeof HomeDashboardImport
-      parentRoute: typeof HomeImport
+      parentRoute: typeof rootRoute
     }
     '/auth/callback/': {
       id: '/auth/callback/'
@@ -177,8 +164,8 @@ export const routeTree = rootRoute.addChildren({
     ExpenseDashboardRoute,
     ExpenseOutputRoute,
   }),
-  HomeRoute: HomeRoute.addChildren({ HomeDashboardRoute }),
   LandingRoute,
+  HomeDashboardRoute,
 })
 
 /* prettier-ignore-end */
@@ -192,8 +179,8 @@ export const routeTree = rootRoute.addChildren({
         "/",
         "/auth",
         "/expense",
-        "/home",
-        "/landing"
+        "/landing",
+        "/home/dashboard"
       ]
     },
     "/": {
@@ -214,12 +201,6 @@ export const routeTree = rootRoute.addChildren({
         "/expense/output"
       ]
     },
-    "/home": {
-      "filePath": "home.tsx",
-      "children": [
-        "/home/dashboard"
-      ]
-    },
     "/landing": {
       "filePath": "landing.tsx"
     },
@@ -232,8 +213,7 @@ export const routeTree = rootRoute.addChildren({
       "parent": "/expense"
     },
     "/home/dashboard": {
-      "filePath": "home/dashboard.tsx",
-      "parent": "/home"
+      "filePath": "home/dashboard.tsx"
     },
     "/auth/callback/": {
       "filePath": "auth/callback/index.tsx",

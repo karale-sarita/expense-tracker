@@ -2,8 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Button } from "@/components/ui/button"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
-import { CopyIcon } from "@radix-ui/react-icons"
-
+import { ColumnDef } from '@tanstack/react-table'
 import {
   ChartConfig,
   ChartContainer,
@@ -15,15 +14,8 @@ import {
 // import { Input } from "@/components/ui/input"
 import {
   Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
 // import { Label } from "@/components/ui/label"
 // import { Label } from "@/components/ui/label"
 import {
@@ -54,16 +46,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {
-  ColumnDef
-} from "@tanstack/react-table"
+
 import React, { useState } from 'react'
 import AddInputModal from '@/components/custom/add-input-modal'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import supabase from '@/utils/supabase'
+import { useQuery } from '@tanstack/react-query'
 import { MonthPicker } from '@/components/month-picker'
 import { TRANSACTION_TYPES } from '@/utils/consts'
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { getTransactionsForMonth } from '@/utils/transactions'
 const chartData = [
   { month: "Income", budget: 186, actual: 80 },
@@ -163,6 +151,8 @@ const pieChartConfig = {
 export const Route = createFileRoute('/expense/dashboard')({
   component: InputExp
 })
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const columns: ColumnDef[] = [
   {
     accessorKey: "id",
@@ -219,28 +209,6 @@ function InputExp() {
   });
 
   const [selctedTab, setTab] = useState(TRANSACTION_TYPES[0])
-
-  // Save data using Mutation
-  // const mutation = useMutation({
-  //   mutationFn: async (newData) => {
-  //     const { error } = await supabase.from("savings").insert(newData);
-  //     if (error) throw new Error(error.message);
-  //   },
-  //   onSuccess: () => {
-  //     // queryClient.invalidateQueries("invoices");
-  //     // Refetch invoices after save
-  //     setIsOpen(false); // Close the modal
-  //   },
-  // });
-
-  const handleAdd = async (newData) => {
-    // mutation.mutate(newData); // Trigger save
-    const { data, error } = await supabase.from("savings").select();
-    if (error) throw new Error(error.message);
-    setInvoices(data)
-    return data;
-  };
-
 
   return (
     <div className="flex overflow-auto flex-col gap-4 w-full p-8">
