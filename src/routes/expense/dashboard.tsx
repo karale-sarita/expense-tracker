@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Button } from "@/components/ui/button"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
-import { ColumnDef } from '@tanstack/react-table'
+// import { ColumnDef } from '@tanstack/react-table'
 import {
   ChartConfig,
   ChartContainer,
@@ -127,10 +127,10 @@ function InputExp() {
     if (shouldRefetch) refetch()
   };
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function closeBudgetModal(shouldRefetch: boolean) {
-    setIsBudget(false); // Close the dialog
-    if (shouldRefetch) refetch()
-  };
+  // function closeBudgetModal(shouldRefetch: boolean) {
+  //   setIsBudget(false); // Close the dialog
+  //   if (shouldRefetch) refetch()
+  // };
   const totalVisitors = React.useMemo(() => {
     return pieChart.reduce((acc, curr) => acc + curr.visitors, 0)
   }, [])

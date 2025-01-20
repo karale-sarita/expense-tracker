@@ -47,7 +47,7 @@ export default function AddExpenseModal({ month, year, closeModal }: any) {
         //     savings: 0,
         // },
     })
-    const { reset, setValue } = form;
+    const { reset } = form;
     useEffect(() => {
         console.log("Fetching budget for", { month, year });
 

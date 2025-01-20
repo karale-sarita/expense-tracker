@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { initate_google_login } from '@/apis/auth';
+// import { initate_google_login } from '@/apis/auth';
 
 import { useMutation } from '@tanstack/react-query';
 import supabase from '../../../utils/supabase';
@@ -45,7 +45,7 @@ function LoginComponent() {
     console.log(e);
 
   }
-  const { mutate: signInWithGoogle, isLoading } = useMutation({
+  const { mutate: signInWithGoogle } = useMutation({
     mutationFn: async () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
