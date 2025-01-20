@@ -45,20 +45,16 @@ function LoginComponent() {
     console.log(e);
 
   }
-  const { mutate: signInWithGoogle } = useMutation({
-    mutationFn: async () => {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-      });
-      if (error) throw new Error(error.message);
-    },
-    onSuccess: () => {
-      console.log('User successfully signed in!');
-    },
-    onError: (error) => {
-      console.error('Error during Google login:', error);
-    },
-  });
+  const signInWithGoogle = async () => {
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.protocol + '//' + window.location.host + '/expense/dashboard'
+      }
+    });
+    if (error) throw new Error(error.message);
+  }
 
   return <div className="flex p-4 flex-col w-full h-full">
     <h3 className="text-xl my-2 text-slate-700 font-semibold">Please log in!</h3>
