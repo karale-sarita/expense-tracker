@@ -45,11 +45,18 @@ function LoginComponent() {
 
   }
   const signInWithGoogle = async () => {
+    console.log('signing in with google')
+    console.log(window.location.protocol + '//' + window.location.host + '/expense/dashboard')
+    // return
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.protocol + '//' + window.location.host + '/expense/dashboard'
+        redirectTo: window.location.protocol + '//' + window.location.host + '/expense/dashboard',
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
       }
     });
     if (error) throw new Error(error.message);
