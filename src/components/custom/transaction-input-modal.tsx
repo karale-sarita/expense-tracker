@@ -12,6 +12,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { METHOD_OF_PAYMENT, TRANSACTION_TYPES } from '@/utils/consts';
 import { Textarea } from '../ui/textarea';
 
+import { cn } from "@/lib/utils"
+import { format } from "date-fns"
+import { CalendarIcon } from "lucide-react"
+
+import { Calendar } from "@/components/ui/calendar"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
 
 
 const FormSchema = z.object({
@@ -24,6 +34,10 @@ const FormSchema = z.object({
         .string({
             required_error: "Please input the amount.",
         }),
+
+    dateofExpense: z.date({
+        required_error: "A date of birth is required.",
+    }),
     reason: z
         .string({
             required_error: "Please input the reason.",
@@ -48,12 +62,14 @@ export default function AddInputModal({ transactionType, closeModal }: any) {
 
         // }
         console.log(data);
+        // return
 
         addTransaction({
             tranaction_type: data.transactionType,
             reason: data.reason,
             amount: data.amount,
-            method_of_payment: data.methodOfPayment
+            method_of_payment: data.methodOfPayment,
+            expense_date: data.dateofExpense
         }).then((val) => {
             console.log({ val })
             closeModal(true)
@@ -72,12 +88,12 @@ export default function AddInputModal({ transactionType, closeModal }: any) {
 
         <div className=' w-full '>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(save)} className="w-full  grid gap-2 justify-center  grid-cols-2 space-y-6">
+                <form onSubmit={form.handleSubmit(save)} className="w-full  grid gap-4 justify-center  grid-cols-2 ">
                     <FormField
                         control={form.control}
                         name="transactionType"
                         render={({ field }) => (
-                            <FormItem>
+                            <FormItem className="space-y-0">
                                 <FormLabel>Transaction Type</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
@@ -97,8 +113,9 @@ export default function AddInputModal({ transactionType, closeModal }: any) {
                     <FormField
                         control={form.control}
                         name="methodOfPayment"
+
                         render={({ field }) => (
-                            <FormItem>
+                            <FormItem className="space-y-0">
                                 <FormLabel>Method of Payment</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
@@ -117,12 +134,49 @@ export default function AddInputModal({ transactionType, closeModal }: any) {
                     />
                     <FormField
                         control={form.control}
+                        name="dateofExpense"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                                <FormLabel>Date of birth</FormLabel>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <FormControl>
+                                            <Button
+                                                variant={"outline"}
+                                                className={cn(
+                                                    "w-full pl-3 text-left font-normal",
+                                                    !field.value && "text-muted-foreground"
+                                                )}
+                                            >
+                                                {field.value ? (
+                                                    format(field.value, "PPP")
+                                                ) : (
+                                                    <span>Pick a date</span>
+                                                )}
+                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                            </Button>
+                                        </FormControl>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0" align="start">
+                                        <Calendar
+                                            mode="single"
+                                            selected={field.value}
+                                            onSelect={field.onChange}
+
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
                         name="amount"
 
                         render={({ field }) => (
-                            <FormItem className='col-span-2'>
+                            <FormItem className="flex flex-col">
                                 <FormLabel>Amount</FormLabel>
-                                <FormControl>
+                                <FormControl className="relative">
                                     <Input placeholder="Amount" {...field} />
                                 </FormControl>
                             </FormItem>
@@ -148,7 +202,9 @@ export default function AddInputModal({ transactionType, closeModal }: any) {
                     <Button variant='outline' onClick={() => closeModal(false)}>Cancel</Button>
                     <Button type="submit">Submit</Button>
                 </form>
+
             </Form>
+
         </div>
 
 

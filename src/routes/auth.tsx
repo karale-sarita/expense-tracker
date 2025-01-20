@@ -1,9 +1,20 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { getSupabaseUser } from '@/utils/auth'
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { FaDragon } from 'react-icons/fa'
 
 
 
 export const Route = createFileRoute('/auth')({
+  beforeLoad: async () => {
+    const { data } = await getSupabaseUser()
+
+    if (data.user) {
+      throw redirect({
+        to: '/expense/dashboard',
+      })
+    }
+
+  },
   component: AuthComponent
 })
 

@@ -16,12 +16,12 @@ const TanStackRouterDevtools =
     )
 
 export const Route = createRootRoute({
-    component: () => (
-        <>
-            <Outlet />
-            <Suspense>
-                <TanStackRouterDevtools position='bottom-right' />
-            </Suspense>
-        </>
-    ),
+  component: () => (
+    <>
+      <Outlet />
+      <Suspense>
+        <TanStackRouterDevtools position='bottom-right' />
+      </Suspense>
+    </>
+  ),
 })

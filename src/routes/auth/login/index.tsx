@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Link, createFileRoute } from '@tanstack/react-router'
@@ -7,6 +8,9 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { initate_google_login } from '@/apis/auth';
+
+import { useMutation } from '@tanstack/react-query';
+import supabase from '../../../utils/supabase';
 
 
 const formSchema: any = z.object({
@@ -41,6 +45,21 @@ function LoginComponent() {
     console.log(e);
 
   }
+  const { mutate: signInWithGoogle, isLoading } = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      });
+      if (error) throw new Error(error.message);
+    },
+    onSuccess: () => {
+      console.log('User successfully signed in!');
+    },
+    onError: (error) => {
+      console.error('Error during Google login:', error);
+    },
+  });
+
   return <div className="flex p-4 flex-col w-full h-full">
     <h3 className="text-xl my-2 text-slate-700 font-semibold">Please log in!</h3>
     <Form {...form}>
@@ -78,17 +97,17 @@ function LoginComponent() {
     </Form>
     <p className="text-sm w-full py-2 text-left">Doesn't have an account? <Link className=' text-primary underline hover:underline-offset-2' to='/auth/register'>Click to sign up.</Link></p>
     <div className="flex py-3 items-center w-full">
-    <div className="bg-slate-300 w-full h-0.5 rounded-full"></div>
-    <div className="px-2 whitespace-nowrap text-xs">sign in with</div>
-    <div className="bg-slate-300 w-full h-0.5 rounded-full"></div>
+      <div className="bg-slate-300 w-full h-0.5 rounded-full"></div>
+      <div className="px-2 whitespace-nowrap text-xs">sign in with</div>
+      <div className="bg-slate-300 w-full h-0.5 rounded-full"></div>
 
     </div>
     <div className="w-full flex gap-3">
       <Button variant='outline' className='w-full text-blue-700'><FaFacebook className='w-5 h-auto' /></Button>
       <Button onClick={_ => {
-        initate_google_login()
-      }} variant='outline' className='w-full text-red-400'><FaGoogle className='w-5 h-auto'/></Button>
-      <Button variant='outline' className='w-full text-slate-800'><FaGithub className='w-5 h-auto'/></Button>
+        signInWithGoogle()
+      }} variant='outline' className='w-full text-red-400'><FaGoogle className='w-5 h-auto' /></Button>
+      <Button variant='outline' className='w-full text-slate-800'><FaGithub className='w-5 h-auto' /></Button>
     </div>
 
   </div>

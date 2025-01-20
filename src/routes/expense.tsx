@@ -1,8 +1,20 @@
-/* eslint-disable react/react-in-jsx-scope */
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { getSupabaseUser } from '@/utils/auth'
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/expense')({
-  component: () => <div className='w-screen h-screen overflow-auto'>
-    <Outlet />
-  </div>
+  beforeLoad: async () => {
+    const { data } = await getSupabaseUser()
+
+    if (!data.user) {
+      throw redirect({
+        to: '/auth/login',
+      })
+    }
+
+  },
+  component: RouteComponent,
 })
+
+function RouteComponent() {
+  return <Outlet />
+}
